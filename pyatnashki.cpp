@@ -7,13 +7,25 @@ int EmptyX, EmptyY;
 
 void CreateField()
 {
+	bool NumIsFree[15];				// массив логических переменных; показывает, занято ли число NumIsFree[i]
 	int Nums[15];					// массив костяшек
 	 					
- 	int RandNum; 
+ 	for (int i = 0; i < 15; i++) 	// все номера костяшек свободны
+  		NumIsFree[i] = true;
+	 
+	bool free;
+	int RandNum; 
  	for (int i = 0; i < 15; i++) 	// генерируем костяшки
  	{
-  		RandNum = (rand() %15) + 1; 
-  		Nums[i] = RandNum; 
+  		free = false;
+  		while (!free)
+  		{
+  			RandNum = (rand() %15) + 1; 
+  			if (NumIsFree[RandNum - 1]) // если такой номер костяшки свободен
+  				free = true;
+  		}
+  		Nums[i] = RandNum;
+  		NumIsFree[RandNum - 1] = false;
  	}
  	
  	for (int i = 0; i < 15; i++)		// переводим список костяшек в вид матрицы
@@ -40,7 +52,6 @@ void DrawField()
    		}
   		cout << '\n';
   	
-	
 		// средняя часть одного ряда
 		for (int i = 0; i < 4; i++) 		// сроки с номерами ячеек
    		{
@@ -54,7 +65,6 @@ void DrawField()
     			cout << " ";
    		}
   		cout << '\n';
-  	
   	
 		// нижняя часть одного ряда
 		for (int i = 0; i < 4; i++) 
