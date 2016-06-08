@@ -1,4 +1,5 @@
 #include <iostream>
+using namespace std;
 
 int field[4][4];
 
