@@ -23,11 +23,54 @@ void CreateField()
  	EmptyX = 3; EmptyY = 3;
 }
 
-
+void DrawField() 
+{
+	system("cls"); 
+ 	
+	
+	for (int j = 0; j < 4; j++) 		// рисуем 4 строки кост€шек
+  	{
+  		// верхн€€ часть одного р€да
+  		for (int i = 0; i < 4; i++) 
+   		{
+   			if (Field[i][j])
+    			cout << "++++";
+   			else
+    			cout << " ";
+   		}
+  		cout << '\n';
+  	
+	
+		// средн€€ часть одного р€да
+		for (int i = 0; i < 4; i++) 		// сроки с номерами €чеек
+   		{
+   			if (Field[i][j])
+    		{
+    			cout << "+";
+    			cout.width(2);
+    			cout << Field[i][j] << "+";
+    		}
+   			else
+    			cout << " ";
+   		}
+  		cout << '\n';
+  	
+  	
+		// нижн€€ часть одного р€да
+		for (int i = 0; i < 4; i++) 
+   		{
+   			if (Field[i][j])
+    			cout << "++++";
+   			else
+    			cout << " " ;
+   		}
+  		cout << '\n';
+  }
+}
 
 
 main ()
 {
 	CreateField ();
-	
+	DrawField ();
 }
