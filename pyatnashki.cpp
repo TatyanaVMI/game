@@ -5,6 +5,8 @@ int field[4][4];
 
 int empty_x, empty_y;
 
+enum keys {LEFT, RIGHT, UP, DOWN};
+
 void create_field()
 {
 	bool num_is_free[15];				// массив логических переменных; показывает, занято ли число NumIsFree[i]
@@ -25,7 +27,7 @@ void create_field()
   				free = true;
   		}
   		numbers[i] = random_number;
-  		num_is_free[random_number] = false;
+  		num_is_free[random_number-1] = false;
  	}
  	
  	for (int i = 0; i < 15; i++)		// переводим список костяшек в вид матрицы
@@ -85,6 +87,51 @@ bool field_is_right()
  	return true;
 }
 
+void shift (keys k)
+{
+	switch (k)
+	{
+		case LEFT:
+		{
+   			if (empty_x < 3)
+    		{
+    			field[empty_x][empty_y] = field[empty_x + 1][empty_y];
+    			field[empty_x + 1][empty_y] = 0;
+    			empty_x++;
+    		}
+   		} break;
+  
+  		case UP:
+   		{
+   			if (empty_y < 3)
+    		{
+    			field[empty_x][empty_y] = field[empty_x][empty_y + 1];
+    			field[empty_x][empty_y + 1] = 0;
+    			empty_y++;
+    		}
+   		} break;
+  
+  		case RIGHT:
+   		{
+   			if (empty_x > 0)
+    		{
+    			field[empty_x][empty_y] = field[empty_x - 1][empty_y];
+    			field[empty_x - 1][empty_y] = 0;
+    			empty_x--;
+    		}
+  		} break;
+  
+  		case DOWN:
+   		{
+   			if (empty_y > 0)
+    		{
+    			field[empty_x][empty_y] = field[empty_x][empty_y - 1];
+    			field[empty_x][empty_y - 1] = 0;
+    			empty_y--;
+    		}
+   		} break;
+  	}
+}
 
 main ()
 {
@@ -97,7 +144,11 @@ main ()
 		cin >> c;
 		switch(c)
 		{
-			
+			case 75: shift(LEFT); break; 		// "влево"		
+			case 72: shift(UP); break; 			// "вверх"
+			case 77: shift(RIGHT); break; 		// "вправо"
+			case 80: shift(DOWN); break; 		// "вниз"
+			case 27: return 0; 					// "ESC"
 		}
 		draw_field();
 	}
