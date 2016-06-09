@@ -1,23 +1,24 @@
 #include <iostream>
+#include <conio.h>
 using namespace std;
 
 int field[4][4];
 
-int empty_x, empty_y;
+int empty_x, empty_y;					
 
 enum keys {LEFT, RIGHT, UP, DOWN};
 
 void create_field()
 {
-	bool num_is_free[15];				// массив логических переменных; показывает, занято ли число NumIsFree[i]
+	bool num_is_free[15];				// массив логических переменных; показывает, свободно ли число NumIsFree[i]
 	int numbers[15];					// массив костяшек
 	 					
- 	for (int i = 0; i < 15; i++) 	// все номера костяшек свободны
-  		num_is_free[i] = true;
+ 	for (int i = 0; i < 15; i++) 		
+  		num_is_free[i] = true;			// все номера костяшек свободны
 	 
 	bool free;
 	int random_number; 
- 	for (int i = 0; i < 15; i++) 	// генерируем костяшки
+ 	for (int i = 0; i < 15; i++) 		// генерируем костяшки
  	{
   		free = false;
   		while (!free)
@@ -30,7 +31,22 @@ void create_field()
   		num_is_free[random_number-1] = false;
  	}
  	
- 	for (int i = 0; i < 15; i++)		// переводим список костяшек в вид матрицы
+ 	int mess = 0;		// количество беспорядков
+ 	int curr_numb;		// текущая костяшка
+ 	for (int i=0; i<14; i++)		// для каждой костяшки считаем количество беспорядков
+ 	{
+ 		curr_numb = numbers[i];
+ 		for (int j = i; j < 15; j++)
+ 		{
+ 			if (curr_numb > numbers[j])
+ 				mess++;
+		}
+		
+		if (mess%2 == 1)		// если количество беспорядков нечетное
+			swap (numbers[13], numbers[14]);	// меняем местами 2 последние костяшки
+	}
+ 	 
+	for (int i = 0; i < 15; i++)		// переводим список костяшек в вид матрицы
   		field[i % 4][i / 4] = numbers[i]; 
  
  	field[3][3] = 0;
@@ -46,7 +62,7 @@ void draw_field()
   		// верхняя часть одного ряда
   		for (int i = 0; i < 4; i++) 
    		{
-   			if (field[i][j])
+   			if (field[i][j] != 0)
     			cout << "++++";
    			else
     			cout << " ";
@@ -56,7 +72,7 @@ void draw_field()
 		// средняя часть одного ряда
 		for (int i = 0; i < 4; i++) 		// сроки с номерами ячеек
    		{
-   			if (field[i][j])
+   			if (field[i][j] != 0)
     		{
     			cout << "+";
     			cout.width(2);
@@ -70,7 +86,7 @@ void draw_field()
 		// нижняя часть одного ряда
 		for (int i = 0; i < 4; i++) 
    		{
-   			if (field[i][j])
+   			if (field[i][j] != 0)
     			cout << "++++";
    			else
     			cout << " " ;
@@ -93,7 +109,7 @@ void shift (keys k)
 	{
 		case LEFT:
 		{
-   			if (empty_x < 3)
+   			if (empty_x < 3)		// если пустая костяшка стоит на корректном месте
     		{
     			field[empty_x][empty_y] = field[empty_x + 1][empty_y];
     			field[empty_x + 1][empty_y] = 0;
@@ -141,15 +157,15 @@ main ()
 	char c;
 	while (!field_is_right())
 	{
-		cin >> c;
+		c = getch ();		// считывает код клавишы
 		switch(c)
 		{
 			case 75: shift(LEFT); break; 		// "влево"		
 			case 72: shift(UP); break; 			// "вверх"
 			case 77: shift(RIGHT); break; 		// "вправо"
 			case 80: shift(DOWN); break; 		// "вниз"
-			case 27: return 0; 					// "ESC"
 		}
 		draw_field();
 	}
+	cout << "Поздравляем! Нажмите Enter, чтобы выйти";
 }
