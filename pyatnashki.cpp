@@ -1,51 +1,50 @@
 #include <iostream>
 using namespace std;
 
-int Field[4][4];
+int field[4][4];
 
-int EmptyX, EmptyY;
+int empty_x, empty_y;
 
-void CreateField()
+void create_field()
 {
-	bool NumIsFree[15];				// массив логических переменных; показывает, занято ли число NumIsFree[i]
-	int Nums[15];					// массив костяшек
+	bool num_is_free[15];				// массив логических переменных; показывает, занято ли число NumIsFree[i]
+	int numbers[15];					// массив костяшек
 	 					
  	for (int i = 0; i < 15; i++) 	// все номера костяшек свободны
-  		NumIsFree[i] = true;
+  		num_is_free[i] = true;
 	 
 	bool free;
-	int RandNum; 
+	int random_number; 
  	for (int i = 0; i < 15; i++) 	// генерируем костяшки
  	{
   		free = false;
   		while (!free)
   		{
-  			RandNum = (rand() %15) + 1; 
-  			if (NumIsFree[RandNum - 1]) // если такой номер костяшки свободен
+  			random_number = (rand() %15)+1; 
+  			if (num_is_free[random_number-1]) // если такой номер костяшки свободен
   				free = true;
   		}
-  		Nums[i] = RandNum;
-  		NumIsFree[RandNum - 1] = false;
+  		numbers[i] = random_number;
+  		num_is_free[random_number] = false;
  	}
  	
  	for (int i = 0; i < 15; i++)		// переводим список костяшек в вид матрицы
-  		Field[i % 4][i / 4] = Nums[i]; 
+  		field[i % 4][i / 4] = numbers[i]; 
  
- 	Field[3][3] = 0;
- 	EmptyX = 3; EmptyY = 3;
+ 	field[3][3] = 0;
+ 	empty_x = 3; empty_y = 3;
 }
 
-void DrawField() 
+void draw_field() 
 {
 	system("cls"); 
- 	
 	
 	for (int j = 0; j < 4; j++) 		// рисуем 4 строки костяшек
   	{
   		// верхняя часть одного ряда
   		for (int i = 0; i < 4; i++) 
    		{
-   			if (Field[i][j])
+   			if (field[i][j])
     			cout << "++++";
    			else
     			cout << " ";
@@ -55,11 +54,11 @@ void DrawField()
 		// средняя часть одного ряда
 		for (int i = 0; i < 4; i++) 		// сроки с номерами ячеек
    		{
-   			if (Field[i][j])
+   			if (field[i][j])
     		{
     			cout << "+";
     			cout.width(2);
-    			cout << Field[i][j] << "+";
+    			cout << field[i][j] << "+";
     		}
    			else
     			cout << " ";
@@ -69,7 +68,7 @@ void DrawField()
 		// нижняя часть одного ряда
 		for (int i = 0; i < 4; i++) 
    		{
-   			if (Field[i][j])
+   			if (field[i][j])
     			cout << "++++";
    			else
     			cout << " " ;
@@ -78,10 +77,10 @@ void DrawField()
   }
 }
 
-bool FieldIsReady()
+bool field_is_right()
 {
 	for (int i = 0; i < 15; i++)
-  	if (Field[i % 4][i / 4] != i + 1)
+  	if (field[i % 4][i / 4] != i+1)
    		return false; 
  	return true;
 }
@@ -89,17 +88,17 @@ bool FieldIsReady()
 
 main ()
 {
-	CreateField ();
-	DrawField ();
+	create_field();
+	draw_field();
 	
 	char c;
-	while (!FieldIsReady())
+	while (!field_is_right())
 	{
 		cin >> c;
 		switch(c)
 		{
 			
 		}
-		DrawField();
+		draw_field();
 	}
 }
