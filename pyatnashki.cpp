@@ -78,9 +78,28 @@ void DrawField()
   }
 }
 
+bool FieldIsReady()
+{
+	for (int i = 0; i < 15; i++)
+  	if (Field[i % 4][i / 4] != i + 1)
+   		return false; 
+ 	return true;
+}
+
 
 main ()
 {
 	CreateField ();
 	DrawField ();
+	
+	char c;
+	while (!FieldIsReady())
+	{
+		cin >> c;
+		switch(c)
+		{
+			
+		}
+		DrawField();
+	}
 }
